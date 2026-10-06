@@ -1,16 +1,18 @@
 ﻿# PhishGuard: Production-Grade Phishing & Smishing Detection System
+
 [![Live Demo](https://img.shields.io/badge/Demo-Live%20Web%20App-success?style=for-the-badge&logo=vercel)](https://phishing-smishing-detector-ui.vercel.app/)
 [![API Docs](https://img.shields.io/badge/API-Swagger%20Docs-blue?style=for-the-badge&logo=fastapi)](https://phishing-smishing-detector.onrender.com/docs)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Framework](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-yellow.svg)](https://huggingface.co/)
 [![Polars](https://img.shields.io/badge/Data-Polars-cd792c.svg)](https://pola.rs/)
 [![FastAPI](https://img.shields.io/badge/API-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-An enterprise-ready, multimodal NLP and tabular ensemble system designed to detect adversarial phishing emails and smishing attacks with high precision and explainability. Built around real-world cybersecurity risk signals, rigorous zero-leakage deduplication, and cost-weighted threshold calibration.
+> 🌐 **Live Web Application (Vercel):** [https://phishing-smishing-detector-ui.vercel.app/](https://phishing-smishing-detector-ui.vercel.app/)  
+> ⚡ **Live Cloud API & Interactive Docs (Render):** [https://phishing-smishing-detector.onrender.com/docs](https://phishing-smishing-detector.onrender.com/docs)
 
----
+An enterprise-ready, multimodal NLP and tabular ensemble system designed to detect adversarial phishing emails and smishing attacks with high precision and explainability. Built around real-world cybersecurity risk signals, rigorous zero-leakage deduplication, and cost-weighted threshold calibration.---
 
 ## 📌 Executive Summary & Architecture
 
@@ -121,4 +123,5 @@ uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 
 ## 📝 Author & Attribution
 Developed by **Gyan Ranjan** as a portfolio project showcasing production AI engineering for cybersecurity threat detection.
+
 
