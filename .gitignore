@@ -11,29 +11,27 @@ data/adversarial/
 *.csv
 *.tsv
 
-# Models and checkpoints
-models/*.joblib
+# Heavy deep learning checkpoints (allow lightweight joblib models)
+checkpoints/
+models/distilbert_best/
+models/*.safetensors
 models/*.pt
 models/*.bin
-models/*.safetensors
 models/*.npy
-checkpoints/
 
-# Virtual Environment
+# Virtual Environment & Node
 .venv/
 venv/
 ENV/
 env/
+ui/node_modules/
+ui/dist/
 
 # IDE & OS
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-
-# Reports outputs (keep markdown, ignore heavy binary caches)
-reports/figures/*.png
-!reports/figures/.gitkeep
 
 # Environment variables
 .env
