@@ -1,7 +1,7 @@
-﻿\"\"\"
+﻿"""
 src/features.py
 Handcrafted cybersecurity risk signals and feature extraction using Polars and Regex.
-\"\"\"
+"""
 import re
 from typing import List, Dict, Any
 import numpy as np
@@ -76,3 +76,4 @@ def extract_feature_matrix(df: pl.DataFrame) -> np.ndarray:
     texts = df["text"].to_list()
     feature_dicts = [extract_features_single(t) for t in texts]
     return np.array([[d[k] for k in FEATURE_NAMES] for d in feature_dicts], dtype=np.float32)
+

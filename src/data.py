@@ -1,7 +1,7 @@
-﻿\"\"\"
+﻿"""
 src/data.py
 Data processing, cleaning, deduplication, and leak-free splitting.
-\"\"\"
+"""
 import os
 import re
 import glob
@@ -12,7 +12,7 @@ from datasets import load_dataset
 
 
 def clean_and_normalize_text(text: str) -> str:
-    \"\"\"Strips HTML tags and normalizes consecutive whitespace.\"\"\"
+    """Strips HTML tags and normalizes consecutive whitespace."""
     if not text:
         return ""
     cleaned = re.sub(r"<[^>]+>", " ", text)
@@ -21,12 +21,12 @@ def clean_and_normalize_text(text: str) -> str:
 
 
 def create_dedup_key(text: str) -> str:
-    \"\"\"Creates a normalized lowercase string key for zero-leakage deduplication.\"\"\"
+    """Creates a normalized lowercase string key for zero-leakage deduplication."""
     return re.sub(r"[^a-zA-Z0-9]", "", text.lower())
 
 
 def load_and_clean_main_dataset() -> pl.DataFrame:
-    \"\"\"Loads HF zefang-liu/phishing-email-dataset and cleans it.\"\"\"
+    """Loads HF zefang-liu/phishing-email-dataset and cleans it."""
     print("Loading Hugging Face main dataset...")
     ds = load_dataset("zefang-liu/phishing-email-dataset")
     df_raw = pl.from_arrow(ds["train"].data.table)
@@ -51,3 +51,4 @@ def load_and_clean_main_dataset() -> pl.DataFrame:
         .select(["text", "label", "source", "dedup_key"])
     )
     return df_cleaned
+

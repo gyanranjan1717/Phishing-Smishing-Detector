@@ -16,8 +16,7 @@ COPY models/ ./models/
 
 ENV MODELS_DIR=/app/models
 ENV DECISION_THRESHOLD=0.070
-ENV PORT=7860
 
-EXPOSE 7860
+EXPOSE 10000
 
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["sh", "-c", "uvicorn api.main:app --host 0.0.0.0 --port "]

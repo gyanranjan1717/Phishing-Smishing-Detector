@@ -1,7 +1,7 @@
-﻿\"\"\"
+﻿"""
 src/evaluate.py
 Comprehensive evaluation metrics, curve plotting, and results logging.
-\"\"\"
+"""
 import os
 import csv
 from typing import Dict, Any, Optional
@@ -24,7 +24,7 @@ def compute_metrics(
     y_prob: np.ndarray,
     threshold: float = 0.5
 ) -> Dict[str, float]:
-    \"\"\"Computes binary classification metrics given probabilities and a decision threshold.\"\"\"
+    """Computes binary classification metrics given probabilities and a decision threshold."""
     y_pred = (y_prob >= threshold).astype(int)
     
     try:
@@ -45,3 +45,4 @@ def compute_metrics(
         "pr_auc": pr_auc,
         "threshold": float(threshold)
     }
+
