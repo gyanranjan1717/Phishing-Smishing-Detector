@@ -13,10 +13,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
 COPY api/ ./api/
 COPY models/ ./models/
+COPY run.py ./
 
 ENV MODELS_DIR=/app/models
 ENV DECISION_THRESHOLD=0.070
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "uvicorn api.main:app --host 0.0.0.0 --port "]
+CMD ["python", "run.py"]
