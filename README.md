@@ -1,5 +1,7 @@
 ﻿# PhishGuard: Production-Grade Phishing & Smishing Detection System
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Web%20App-success?style=for-the-badge&logo=vercel)](https://phishing-smishing-detector-ui.vercel.app/)
+[![API Docs](https://img.shields.io/badge/API-Swagger%20Docs-blue?style=for-the-badge&logo=fastapi)](https://phishing-smishing-detector.onrender.com/docs)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Framework](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-yellow.svg)](https://huggingface.co/)
 [![Polars](https://img.shields.io/badge/Data-Polars-cd792c.svg)](https://pola.rs/)
@@ -119,3 +121,4 @@ uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 
 ## 📝 Author & Attribution
 Developed by **Gyan Ranjan** as a portfolio project showcasing production AI engineering for cybersecurity threat detection.
+
