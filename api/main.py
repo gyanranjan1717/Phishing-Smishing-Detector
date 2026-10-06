@@ -5,9 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import joblib
-import torch
 import numpy as np
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
@@ -33,13 +31,10 @@ state = {
     "tfidf": None,
     "xgb": None,
     "meta_learner": None,
-    "tokenizer": None,
-    "distil_model": None,
-    "device": "cpu"
 }
 
 def load_artifacts():
-    print("Loading models into memory...")
+    print("Loading lightweight PhishGuard models into memory...")
     try:
         tfidf_path = os.path.join(MODELS_DIR, "baseline_tfidf_lr.joblib")
         if os.path.exists(tfidf_path):
@@ -53,15 +48,7 @@ def load_artifacts():
         if os.path.exists(meta_path):
             state["meta_learner"] = joblib.load(meta_path)
 
-        distil_path = os.path.join(MODELS_DIR, "distilbert_best")
-        if os.path.exists(distil_path):
-            state["tokenizer"] = AutoTokenizer.from_pretrained(distil_path)
-            state["distil_model"] = AutoModelForSequenceClassification.from_pretrained(distil_path)
-            state["distil_model"].eval()
-            dev = "cuda" if torch.cuda.is_available() else "cpu"
-            state["distil_model"].to(dev)
-            state["device"] = dev
-        print("Models successfully loaded!")
+        print("Models successfully loaded with low memory footprint!")
     except Exception as e:
         print("Model loading notice:", e)
 
@@ -91,12 +78,10 @@ class PredictResponse(BaseModel):
 def health():
     return {
         "status": "healthy",
-        "device": state["device"],
         "models_loaded": {
             "tfidf": state["tfidf"] is not None,
             "xgb": state["xgb"] is not None,
-            "meta_learner": state["meta_learner"] is not None,
-            "distilbert": state["distil_model"] is not None
+            "meta_learner": state["meta_learner"] is not None
         },
         "threshold": DECISION_THRESHOLD
     }
@@ -113,21 +98,14 @@ def predict(payload: PredictRequest):
     xgb_p = float(state["xgb"].predict_proba(feat_vec)[0, 1]) if state["xgb"] else 0.5
     tfidf_p = float(state["tfidf"].predict_proba([text])[0, 1]) if state["tfidf"] else 0.5
 
-    distil_p = 0.5
-    tok = state["tokenizer"]
-    model = state["distil_model"]
-    if tok and model:
-        with torch.no_grad():
-            batch = tok(text, truncation=True, max_length=256, padding=True, return_tensors="pt")
-            batch = {k: v.to(state["device"]) for k, v in batch.items()}
-            logits = model(**batch).logits
-            distil_p = float(torch.softmax(logits, dim=-1)[0, 1].cpu().item())
+    # Semantic approximation from lexical + heuristics
+    distil_p = float(np.clip((tfidf_p * 0.7) + (xgb_p * 0.3), 0.0, 1.0))
 
     if state["meta_learner"]:
         meta_features = np.array([[distil_p, xgb_p, tfidf_p]])
         ensemble_score = float(state["meta_learner"].predict_proba(meta_features)[0, 1])
     else:
-        ensemble_score = float((distil_p * 0.6) + (xgb_p * 0.4))
+        ensemble_score = float((tfidf_p * 0.6) + (xgb_p * 0.4))
 
     is_phish = bool(ensemble_score >= DECISION_THRESHOLD)
     verdict = "PHISHING / MALICIOUS" if is_phish else "LEGITIMATE / SAFE"
