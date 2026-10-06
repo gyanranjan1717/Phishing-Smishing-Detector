@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 const SAMPLES = [
   {
@@ -25,7 +25,7 @@ export default function App() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState('');
 
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const apiUrl = import.meta.env.VITE_API_URL || 'https://phishing-smishing-detector.onrender.com';
 
   const handleAnalyze = async () => {
     if (!text.trim()) return;
@@ -34,14 +34,14 @@ export default function App() {
     setResult(null);
 
     try {
-      const response = await fetch(${apiUrl}/predict, {
+      const response = await fetch(apiUrl + '/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text })
       });
 
       if (!response.ok) {
-        throw new Error(API error: );
+        throw new Error('API request failed with status: ' + response.statusText);
       }
 
       const data = await response.json();
@@ -61,14 +61,13 @@ export default function App() {
             PhishGuard AI
           </h1>
           <p style={{ color: '#94a3b8', marginTop: '0.5rem', fontSize: '1.1rem' }}>
-            Multimodal Ensemble Threat Detection (DistilBERT + XGBoost Heuristics + Meta-Learner)
+            Multimodal Threat Detection Engine (DistilBERT + XGBoost Security Signals + Meta-Learner)
           </p>
         </header>
 
-        {/* Sample chips */}
         <div style={{ marginBottom: '1.5rem' }}>
           <p style={{ fontSize: '0.85rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
-            Try Pre-loaded Samples:
+            Try Pre-loaded Threat Samples:
           </p>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             {SAMPLES.map((s, idx) => (
@@ -91,12 +90,11 @@ export default function App() {
           </div>
         </div>
 
-        {/* Input Textarea */}
         <div style={{ backgroundColor: '#1e293b', borderRadius: '12px', padding: '1.2rem', border: '1px solid #334155', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)' }}>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder=\"Paste an email body, SMS message, or notification text here to inspect risk signals...\"
+            placeholder="Paste an email body, SMS message, or notification text here to inspect risk signals..."
             rows={6}
             style={{
               width: '100%',
@@ -136,20 +134,18 @@ export default function App() {
           </div>
         </div>
 
-        {/* Error */}
         {error && (
           <div style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: '#7f1d1d', borderRadius: '8px', border: '1px solid #991b1b', color: '#fecaca' }}>
-            ⚠️ {error}
+            Warning: {error}
           </div>
         )}
 
-        {/* Results Card */}
         {result && (
           <div style={{
             marginTop: '2rem',
             backgroundColor: '#1e293b',
             borderRadius: '12px',
-            border: 2px solid ,
+            border: '2px solid ' + (result.is_phishing ? '#ef4444' : '#22c55e'),
             padding: '1.5rem',
             boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
           }}>
@@ -180,7 +176,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Sub-model Scores */}
             <div style={{ marginTop: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', backgroundColor: '#0f172a', padding: '1rem', borderRadius: '8px' }}>
               <div>
                 <div style={{ fontSize: '0.8rem', color: '#64748b' }}>DistilBERT (Semantic)</div>
@@ -196,10 +191,9 @@ export default function App() {
               </div>
             </div>
 
-            {/* Contributing Signals */}
             <div style={{ marginTop: '1.5rem' }}>
               <h3 style={{ fontSize: '1rem', fontWeight: '600', color: '#f1f5f9', marginBottom: '0.8rem' }}>
-                🚨 Identified Threat Signals
+                Threat Signals Identified
               </h3>
               {result.top_signals.length === 0 ? (
                 <p style={{ color: '#64748b', fontSize: '0.9rem', fontStyle: 'italic' }}>
