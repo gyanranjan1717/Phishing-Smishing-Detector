@@ -1,0 +1,39 @@
+﻿# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.class
+
+# Data directories (never commit heavy datasets)
+data/raw/
+data/processed/
+data/adversarial/
+*.parquet
+*.csv
+*.tsv
+
+# Models and checkpoints
+models/*.joblib
+models/*.pt
+models/*.bin
+models/*.safetensors
+models/*.npy
+checkpoints/
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Reports outputs (keep markdown, ignore heavy binary caches)
+reports/figures/*.png
+!reports/figures/.gitkeep
+
+# Environment variables
+.env
