@@ -114,24 +114,29 @@ Phishing-Smishing-Detector/
 
 ## 🚀 Quickstart
 
-### 1. Installation
+### 1. Clone & Set Up Environment
 ```bash
 git clone git@github.com:gyanranjan1717/Phishing-Smishing-Detector.git
 cd Phishing-Smishing-Detector
+
+# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Verify Zero-Leakage Tests
+### 2. Run Automated Zero-Leakage Tests
 ```bash
 pytest -v tests/
 ```
 
-### 3. Run Inference API Locally
+### 3. Launch Local Inference API
 ```bash
-uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+python run.py
 ```
+> The API will start at `http://localhost:10000` with Swagger docs at `http://localhost:10000/docs`.
 
 ---
 
