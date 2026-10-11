@@ -1,6 +1,6 @@
-﻿import os
+import os
 import sys
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -73,6 +73,8 @@ class PredictResponse(BaseModel):
     xgb_prob: float
     tfidf_prob: float
     top_signals: List[SignalDetail]
+    all_features: Optional[Dict[str, float]] = None
+    soc_guidance: Optional[str] = None
 
 @app.get("/health")
 def health():
@@ -122,6 +124,13 @@ def predict(payload: PredictRequest):
     if feat_dict["upper_ratio"] > 0.15:
         top_signals.append(SignalDetail(feature="upper_ratio", value=round(feat_dict["upper_ratio"], 2), description="Abnormally high uppercase ratio"))
 
+    soc_guidance = (
+        "QUARANTINE & REVIEW: Flagged under cost-weighted security policy (Threshold: 0.070). "
+        "Review sender domain authentication (SPF/DKIM) before delivering."
+        if is_phish else
+        "DELIVER TO INBOX: Message conforms to legitimate enterprise communication baseline."
+    )
+
     return PredictResponse(
         verdict=verdict,
         risk_score=round(ensemble_score, 4),
@@ -130,5 +139,7 @@ def predict(payload: PredictRequest):
         distilbert_prob=round(distil_p, 4),
         xgb_prob=round(xgb_p, 4),
         tfidf_prob=round(tfidf_p, 4),
-        top_signals=top_signals
+        top_signals=top_signals,
+        all_features=feat_dict,
+        soc_guidance=soc_guidance
     )
